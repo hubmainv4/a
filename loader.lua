@@ -1,4 +1,3 @@
-
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -37,8 +36,7 @@ loader.Parent = CoreGui
 loader.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 local games = {
-	{ name = "SOA | CryptHub Neo", link = "https://raw.githubusercontent.com/hubmainv4/a/main/neo.lua
-" },
+	{ name = "SOA | CryptHub Neo", link = "https://raw.githubusercontent.com/hubmainv4/a/main/neo.lua" },
 	{ name = "SOA | CryptHub Old", link = "https://raw.githubusercontent.com/hubmainv4/a/main/old.lua" },
 }
 
