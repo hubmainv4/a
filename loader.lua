@@ -37,8 +37,9 @@ loader.Parent = CoreGui
 loader.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 local games = {
-	{ name = "SOA | CryptHub Neo", link = "https://raw.githubusercontent.com/hubmainv4/a/refs/heads/main/neo.lua" },
-	{ name = "SOA | CryptHub Old", link = "https://raw.githubusercontent.com/hubmainv4/a/refs/heads/main/old.lua" },
+	{ name = "SOA | CryptHub Neo", link = "https://raw.githubusercontent.com/hubmainv4/a/main/neo.lua
+" },
+	{ name = "SOA | CryptHub Old", link = "https://raw.githubusercontent.com/hubmainv4/a/main/old.lua" },
 }
 
 local main = Instance.new("Frame")
