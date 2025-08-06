@@ -196,7 +196,7 @@ for _, gameInfo in ipairs(games) do
 	connections[#connections + 1] = btn.MouseButton1Click:Connect(function()
 		if gameInfo.link then
 			local success, err = pcall(function()
-				loadstring(game:HttpGet(gameInfo.link))()
+				loadstring(game:HttpGet(gameInfo.link, true))()
 			end)
 			if not success then
 				warn("Failed to load script:", err)
