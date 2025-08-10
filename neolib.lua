@@ -1373,9 +1373,9 @@ PlayerUtility:Button({
 })
   
 PlayerUtility:Button({
-	Name = "Rejoin Game",
+	Name = "Return to Lobby",
 	Callback = function()
-		local currentPlaceId = game.PlaceId
+		local currentPlaceId = 2000062521
 		
 		local success = pcall(function()
 			game:GetService("TeleportService"):Teleport(currentPlaceId, game.Players.LocalPlayer)
