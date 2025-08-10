@@ -772,6 +772,9 @@ function Library:LoadConfigTab(Window)
 		local Menu = Config:Section({
 			Name = "Menu"
 		})
+		local PlayerUtility = Config:Section({
+		    Name = "Player Utility"
+		})
 		local PresetThemes = Config:Section({
 			Name = "Preset Themes"
 		})
