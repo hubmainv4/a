@@ -1931,7 +1931,7 @@ do
 			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			BorderColor3 = Color3.new(0, 0, 0),
-			Text = "CryptHub Neo | 1.5 | NORECOIL + MAGICBULLET + RAPID FIRE",
+			Text = "CryptHub Neo | 1.5.2 | HUGE UTILITY UPDATE",
 			TextColor3 = "Accent",
 			AutoButtonColor = false,
 			FontFace = Library.Font,
