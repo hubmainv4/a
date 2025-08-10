@@ -1355,6 +1355,38 @@ PresetThemes:Dropdown({
 				Library:Unload()
 			end
 		})
+							
+PlayerUtility:Button({
+	Name = "Rejoin Server",
+	Callback = function()
+		local currentPlaceId = game.PlaceId
+		local currentJobId = game.JobId
+		
+		local success = pcall(function()
+			game:GetService("TeleportService"):TeleportToPlaceInstance(currentPlaceId, currentJobId, game.Players.LocalPlayer)
+		end)
+		
+		if not success then
+			Library:Notification("Unable to rejoin Server", 3, nil, "Top")
+		end
+	end
+})
+  
+PlayerUtility:Button({
+	Name = "Rejoin Game",
+	Callback = function()
+		local currentPlaceId = game.PlaceId
+		
+		local success = pcall(function()
+			game:GetService("TeleportService"):Teleport(currentPlaceId, game.Players.LocalPlayer)
+		end)
+		
+		if not success then
+			Library:Notification("Unable to rejoin Server", 3, nil, "Top")
+		end
+	end
+})
+							
 		randomfunc = Cfgs:Textbox({
 			Flag = "SettingsConfigurationName",
 			Name = "Config name"
