@@ -1434,7 +1434,14 @@ Name = "Load Explorer",
 Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()								
 end
-})										
+})	
+
+editingsectah:Button({
+Name = "Load Full ACB",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/hubmainv4/a/refs/heads/main/acb2"))()								
+end
+})							
 							
 		randomfunc = Cfgs:Textbox({
 			Flag = "SettingsConfigurationName",
