@@ -881,7 +881,7 @@ PresetThemes:Dropdown({
 		"Black Ice",
 		"Terminal Wave"
 	},
-	State = "CryptHub OF",
+	State = 'CryptHub OF',
 	Callback = function(v)
 		local themes = {
 
