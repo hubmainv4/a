@@ -819,7 +819,6 @@ PresetThemes:Dropdown({
 	Name = "Presets",
 	Flag = "UI/Presets",
 	Options = {
-        "CryptHub Official"
 		"Tokyo Night",
 		"Kanagawa",						
 		"Quartz",
@@ -879,15 +878,6 @@ PresetThemes:Dropdown({
 	State = "Quartz",
 	Callback = function(v)
 		local themes = {
-
-
-					["CryptHub Official"] = {
-						FontColor = "#ffffff",
-						MainColor = "#2e2e2e",
-						Accent = "#6a00ff",
-						BackgroundColor = "#1c1c1c",
-						OutlineColor = "#000000"
-					},
 					['Tokyo Night'] = {
 			                        FontColor = "#FFFFFF",
 			                        MainColor = "#191925",
