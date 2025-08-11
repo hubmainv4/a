@@ -2916,6 +2916,11 @@ do
 			FontFace = Library.Font,
 			TextSize = 14,
 		})
+							
+if Properties.Tooltip then
+    Library:AttachTooltip(NewSlider, Properties.Tooltip)
+end
+							
 		local Outline = Library:Create('Frame', {
 			Parent = NewSlider,
 			Position = UDim2.new(0, 15, 1, 0),
@@ -3097,9 +3102,6 @@ do
 		return Slider
 	end
 						
-if Properties.Tooltip then
-    Library:AttachTooltip(NewSlider, Properties.Tooltip)
-end
 						
 
 	function Sections:Dropdown(Properties)
