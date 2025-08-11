@@ -770,7 +770,7 @@ function Library:LoadConfigTab(Window)
 	})
 	do
 	    local PlayerUtility = Config:Section({
-		    Name = "Player Utility"
+		    Name = "Management"
 		})
 		local Menu = Config:Section({
 			Name = "Menu"
@@ -1403,6 +1403,27 @@ PlayerUtility:Button({
 		end
 	end
 })
+PlayerUtility:Button({
+Name = "Infinite Yield",
+Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()							
+end
+})
+PlayerUtility:Button({
+Name = "Hydroxide",
+Callback = function()
+local owner = "Upbolt"
+local branch = "revision"
+
+local function webImport(file)
+    return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/Hydroxide/%s/%s.lua"):format(owner, branch, file)), file .. '.lua')()
+end
+
+webImport("init")
+webImport("ui/main")									
+end
+})
+										
 							
 		randomfunc = Cfgs:Textbox({
 			Flag = "SettingsConfigurationName",
