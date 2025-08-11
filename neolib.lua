@@ -1473,11 +1473,6 @@ PlayerUtility:Button({
 				end
 			end
 		})
-				UpdateConfigList()			
-				autoloadlabel = Cfgs:Label({
-			Name = "Current Auto Load:",
-			Centered = true
-		})					
 		Cfgs:Button({
 			Name = "Refresh",
 			Callback = function()
@@ -1485,8 +1480,11 @@ PlayerUtility:Button({
 				Library:Notification("Config List Refreshed", 3, nil, "Top")
 			end
 		})
-		
-
+		UpdateConfigList()
+		autoloadlabel = Cfgs:Label({
+			Name = "Current Auto Load:",
+			Centered = true
+		})
 		Library:SetOpen()
 		if isfile(ConfigFolder .. "/autoload.txt") then
 			loadedcfgshit = readfile(ConfigFolder .. "/autoload.txt")
