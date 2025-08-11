@@ -876,7 +876,7 @@ PresetThemes:Dropdown({
 		"Black Ice",
 		"Terminal Wave"
 	},
-	State = "Quartz",
+	State = "CryptHub Official",
 	Callback = function(v)
 		local themes = {
 
