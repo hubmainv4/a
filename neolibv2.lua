@@ -3096,7 +3096,12 @@ do
 		-- // Returning
 		return Slider
 	end
-	--
+						
+if Properties.Tooltip then
+    Library:AttachTooltip(NewSlider, Properties.Tooltip)
+end
+						
+
 	function Sections:Dropdown(Properties)
 		local Properties = Properties or {};
 		local Dropdown = {
