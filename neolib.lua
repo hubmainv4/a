@@ -1372,9 +1372,17 @@ PresetThemes:Dropdown({
 			end
 		})
 		Menu:Button({
-			Name = "Unload",
+			Name = "Unload Script",
 			Callback = function()
 				Library:Unload()
+			end
+		})
+		Menu:Button({
+			Name = "Reload Script",
+			Callback = function()
+				Library:Unload()
+wait(3.0)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/hubmainv4/a/refs/heads/main/neoa"))()													
 			end
 		})
 							
