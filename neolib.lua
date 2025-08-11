@@ -770,7 +770,7 @@ function Library:LoadConfigTab(Window)
 	})
 	do
 	    local PlayerUtility = Config:Section({
-		    Name = "Management"
+		    Name = "Teleport"
 		})
 		local Menu = Config:Section({
 			Name = "Menu"
@@ -786,6 +786,11 @@ function Library:LoadConfigTab(Window)
 			Name = "Configs",
 			Side = "Right"
 		})
+	    local editingsectah = Config:Section({
+		    Name = "Control",
+            Side = "Right"
+		})
+							
 		local CurrentList = {}
 		local CFGList, loadedcfgshit, autoloadlabel, randomfunc, maincolor, backgroundcolor, outlinecolor, fontcolor, accentcolor
 		local function UpdateConfigList()
@@ -1403,14 +1408,14 @@ PlayerUtility:Button({
 		end
 	end
 })
-PlayerUtility:Button({
-Name = "Infinite Yield",
+editingsectah:Button({
+Name = "Load Infinite Yield",
 Callback = function()
 loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()							
 end
 })
-PlayerUtility:Button({
-Name = "Hydroxide",
+editingsectah:Button({
+Name = "Load Hydroxide",
 Callback = function()
 local owner = "Upbolt"
 local branch = "revision"
@@ -1423,7 +1428,13 @@ webImport("init")
 webImport("ui/main")									
 end
 })
-										
+							
+PlayerUtility:Button({
+Name = "Load Explorer",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()								
+end
+})										
 							
 		randomfunc = Cfgs:Textbox({
 			Flag = "SettingsConfigurationName",
