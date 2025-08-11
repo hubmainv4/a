@@ -399,147 +399,6 @@ function Library:Notification(message, duration, color, position)
 	end
 	return nil
 end
-
--- ========== TOOLTIP SYSTEM ==========
-do
-    function Library:CreateTooltipGui()
-        if self.TooltipFrame then return end
-
-   
-        local TooltipFrame = Library:Create("Frame", {
-            Parent = Library.ScreenGui,
-            Size = UDim2.new(0, 160, 0, 20),
-            BackgroundColor3 = Library.BackgroundColor or Color3.fromRGB(20,20,20),
-            BorderColor3 = Library.OutlineColor or Color3.new(0,0,0),
-            AnchorPoint = Vector2.new(0, 0),
-            Visible = false,
-            ZIndex = 99999999
-        })
-
-
-        local Inline = Library:Create("Frame", {
-            Parent = TooltipFrame,
-            Position = UDim2.new(0,1,0,1),
-            Size = UDim2.new(1,-2,1,-2),
-            BackgroundColor3 = Library.MainColor or Color3.fromRGB(30,30,30),
-            BorderSizePixel = 0,
-        })
-
-
-        local Text = Library:Create("TextLabel", {
-            Parent = Inline,
-            Position = UDim2.new(0,6,0,0),
-            Size = UDim2.new(1,-12,1,0),
-            BackgroundTransparency = 1,
-            Text = "",
-            TextColor3 = Library.FontColor or Color3.new(1,1,1),
-            FontFace = Library.Font,
-            TextSize = Library.FontSize or 12,
-            TextXAlignment = Enum.TextXAlignment.Left,
-            TextYAlignment = Enum.TextYAlignment.Center,
-            TextTransparency = 1
-        })
-
-
-        Library:Create("UIStroke", {
-            Parent = TooltipFrame,
-            Color = Library.OutlineColor or Color3.new(0,0,0)
-        })
-
-        self.TooltipFrame = TooltipFrame
-        self.TooltipInline = Inline
-        self.TooltipText = Text
-    end
-
-    function Library:ShowTooltip(text, absPosition)
-        self:CreateTooltipGui()
-        if not self.TooltipFrame then return end
-
-        local TF = self.TooltipFrame
-        local TXT = self.TooltipText
-
-        TXT.Text = tostring(text or "")
-
-        task.wait()
-        local w = math.clamp(TXT.TextBounds.X + 12, 80, 600)
-        TF.Size = UDim2.new(0, w, 0, 20)
-
-
-        local x = absPosition.X
-        local y = absPosition.Y - TF.AbsoluteSize.Y - 6
-
-        local viewport = workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize or Vector2.new(800,600)
-        if x + TF.AbsoluteSize.X > viewport.X then
-            x = math.max(6, viewport.X - TF.AbsoluteSize.X - 6)
-        end
-        if y < 6 then
-            y = absPosition.Y + 6
-        end
-
-        TF.Position = UDim2.new(0, x, 0, y)
-        TF.Visible = true
-
-        -- Tween in
-        TF.BackgroundTransparency = 1
-        TXT.TextTransparency = 1
-        Library:TweenProperty(TF, "BackgroundTransparency", 0, 0.16)
-        Library:TweenProperty(TXT, "TextTransparency", 0, 0.16)
-    end
-
-    function Library:HideTooltip()
-        if not self.TooltipFrame then return end
-        local TF = self.TooltipFrame
-        local TXT = self.TooltipText
-        Library:TweenProperty(TXT, "TextTransparency", 1, 0.12)
-        Library:TweenProperty(TF, "BackgroundTransparency", 1, 0.12)
-        task.delay(0.13, function()
-            if TF then TF.Visible = false end
-        end)
-    end
-
-
-    function Library:AttachTooltip(GuiObject, text)
-        if not GuiObject or not GuiObject:IsA("GuiObject") then return end
-        local hovering = false
-        local watcher = nil
-
-        Library:Connection(GuiObject.MouseEnter, function()
-            hovering = true
-
-            watcher = coroutine.wrap(function()
-                local start = tick()
-                while tick() - start < 3 do
-                    if not hovering then return end
-                    task.wait(0.08)
-                end
-                if hovering and Library:IsMouseOverFrame(GuiObject) then
-                    local pos = GuiObject.AbsolutePosition
-
-                    pos = pos + Vector2.new(GuiObject.AbsoluteSize.X/2, 0)
-                    Library:ShowTooltip(text, pos)
-                end
-            end)
-            watcher()
-        end)
-
-        Library:Connection(GuiObject.MouseLeave, function()
-            hovering = false
-            Library:HideTooltip()
-        end)
-
-
-        Library:Connection(userinput.InputBegan, function(input)
-            if hovering and input.UserInputType == Enum.UserInputType.MouseButton1 then
-                hovering = false
-                Library:HideTooltip()
-            end
-        end)
-    end
-end
-
-
-
-          
 --
 function Library:Disconnect(Connection)
 	Connection:Disconnect()
@@ -2361,7 +2220,171 @@ do
 		return setmetatable(Section, Library.Sections)
 	end
 	--
-	function Sections:Toggle(Properties)
+	
+-- ======= ROBUST TOOLTIP SYSTEM (ADDED) =======
+do
+    function Library:CreateTooltipGui()
+        if self.TooltipFrame then return end
+
+        local parentGui = self.ScreenGui or (typeof(gethui) == "function" and gethui()) or nil
+        local TooltipFrame = Instance.new("Frame")
+        TooltipFrame.Name = "NeoLibTooltip"
+        TooltipFrame.Size = UDim2.new(0, 160, 0, 20)
+        TooltipFrame.BackgroundColor3 = self.BackgroundColor or Color3.fromRGB(20,20,20)
+        TooltipFrame.BorderColor3 = self.OutlineColor or Color3.new(0,0,0)
+        TooltipFrame.AnchorPoint = Vector2.new(0,0)
+        TooltipFrame.Visible = false
+        TooltipFrame.ZIndex = 99999999
+        if parentGui then TooltipFrame.Parent = parentGui end
+
+        local Inline = Instance.new("Frame")
+        Inline.Name = "Inline"
+        Inline.Position = UDim2.new(0,1,0,1)
+        Inline.Size = UDim2.new(1,-2,1,-2)
+        Inline.BackgroundColor3 = self.MainColor or Color3.fromRGB(30,30,30)
+        Inline.BorderSizePixel = 0
+        Inline.Parent = TooltipFrame
+
+        local Text = Instance.new("TextLabel")
+        Text.Name = "Text"
+        Text.Parent = Inline
+        Text.Position = UDim2.new(0,6,0,0)
+        Text.Size = UDim2.new(1,-12,1,0)
+        Text.BackgroundTransparency = 1
+        Text.Text = ""
+        Text.TextColor3 = self.FontColor or Color3.new(1,1,1)
+        pcall(function() Text.FontFace = self.Font end)
+        Text.TextSize = self.FontSize or 12
+        Text.TextXAlignment = Enum.TextXAlignment.Left
+        Text.TextYAlignment = Enum.TextYAlignment.Center
+        Text.TextTransparency = 1
+
+        local uiStroke = Instance.new("UIStroke")
+        uiStroke.Parent = TooltipFrame
+        pcall(function() uiStroke.Color = self.OutlineColor or Color3.new(0,0,0) end)
+
+        self.TooltipFrame = TooltipFrame
+        self.TooltipInline = Inline
+        self.TooltipText = Text
+    end
+
+    function Library:EnsureTooltipParent()
+        if not self.TooltipFrame then return end
+        if not self.TooltipFrame.Parent then
+            local parentGui = self.ScreenGui or (typeof(gethui) == "function" and gethui()) or nil
+            if parentGui then self.TooltipFrame.Parent = parentGui end
+        end
+    end
+
+    function Library:ShowTooltip(text, absPosition)
+        self:CreateTooltipGui()
+        self:EnsureTooltipParent()
+        if not self.TooltipFrame or not self.TooltipText then return end
+
+        local TF = self.TooltipFrame
+        local TXT = self.TooltipText
+
+        TXT.Text = tostring(text or "")
+        task.wait() -- let TextBounds update
+        local w = math.clamp(TXT.TextBounds.X + 12, 80, 600)
+        TF.Size = UDim2.new(0, w, 0, 20)
+
+        local viewport = workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize or Vector2.new(800,600)
+        local x = absPosition.X - (w / 2)
+        local y = absPosition.Y - TF.AbsoluteSize.Y - 6
+        if x + w > viewport.X then x = math.max(6, viewport.X - w - 6) end
+        if x < 6 then x = 6 end
+        if y < 6 then y = absPosition.Y + 6 end
+
+        TF.Position = UDim2.new(0, x, 0, y)
+        TF.Visible = true
+
+        pcall(function()
+            TF.BackgroundTransparency = 1
+            TXT.TextTransparency = 1
+            self:TweenProperty(TF, "BackgroundTransparency", 0, 0.16)
+            self:TweenProperty(TXT, "TextTransparency", 0, 0.16)
+        end)
+    end
+
+    function Library:HideTooltip()
+        if not self.TooltipFrame then return end
+        local TF = self.TooltipFrame
+        local TXT = self.TooltipText
+        pcall(function()
+            self:TweenProperty(TXT, "TextTransparency", 1, 0.12)
+            self:TweenProperty(TF, "BackgroundTransparency", 1, 0.12)
+        end)
+        task.delay(0.13, function() if TF then TF.Visible = false end end)
+    end
+
+    function Library:AttachTooltip(GuiObject, text)
+        if not GuiObject then return end
+
+        if type(GuiObject) == "table" then
+            if rawget(GuiObject, "Instance") and typeof(GuiObject.Instance) == "Instance" then
+                GuiObject = GuiObject.Instance
+            else
+                for k,v in pairs(GuiObject) do
+                    if typeof(v) == "Instance" and v:IsA("GuiObject") then
+                        GuiObject = v
+                        break
+                    end
+                end
+            end
+        end
+
+        if type(GuiObject) ~= "Instance" or not GuiObject:IsA("GuiObject") then
+            warn("[Library:AttachTooltip] invalid gui object passed:", typeof(GuiObject))
+            return
+        end
+
+        local hovering = false
+        local watcher = nil
+
+        local ok, _ = pcall(function()
+            Library:Connection(GuiObject.MouseEnter, function()
+                hovering = true
+                watcher = coroutine.wrap(function()
+                    local start = tick()
+                    while tick() - start < 3 do
+                        if not hovering then return end
+                        task.wait(0.06)
+                    end
+                    if hovering and Library:IsMouseOverFrame(GuiObject) then
+                        local pos = GuiObject.AbsolutePosition + Vector2.new(GuiObject.AbsoluteSize.X/2, 0)
+                        Library:ShowTooltip(text, pos)
+                    end
+                end)
+                watcher()
+            end)
+        end)
+        if not ok then
+            warn("[Library:AttachTooltip] failed to connect MouseEnter")
+            return
+        end
+
+        pcall(function()
+            Library:Connection(GuiObject.MouseLeave, function()
+                hovering = false
+                Library:HideTooltip()
+            end)
+        end)
+
+        pcall(function()
+            Library:Connection(userinput.InputBegan, function(input)
+                if hovering and input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    hovering = false
+                    Library:HideTooltip()
+                end
+            end)
+        end)
+    end
+end
+-- ======= END ROBUST TOOLTIP SYSTEM =======
+
+
+function Sections:Toggle(Properties)
 		if not Properties then
 			Properties = {}
 		end
@@ -2401,7 +2424,11 @@ do
 			ListValue = nil,
 		}
 		--
-		local NewToggle = Library:Create('TextButton', {
+		local NewToggle = Library:Create('TextButton'
+        if Properties.Tooltip then
+            pcall(function() Library:AttachTooltip(NewToggle, Properties.Tooltip) end)
+        end
+, {
 			Parent = Toggle.Section.Elements.SectionContent,
 			Size = UDim2.new(1, 0, 0, 10),
 			BackgroundColor3 = Color3.new(1, 1, 1),
@@ -2903,7 +2930,11 @@ do
 		}
 		local TextValue = ("[value]" .. Slider.Sub)
 		--
-		local NewSlider = Library:Create('TextButton', {
+		local NewSlider = Library:Create('TextButton'
+        if Properties.Tooltip then
+            pcall(function() Library:AttachTooltip(NewSlider, Properties.Tooltip) end)
+        end
+, {
 			Parent = Slider.Section.Elements.SectionContent,
 			Size = UDim2.new(1, 0, 0, 22),
 			BackgroundColor3 = Color3.new(1, 1, 1),
@@ -2916,11 +2947,6 @@ do
 			FontFace = Library.Font,
 			TextSize = 14,
 		})
-							
-if Properties.Tooltip then
-    Library:AttachTooltip(NewSlider, Properties.Tooltip)
-end
-							
 		local Outline = Library:Create('Frame', {
 			Parent = NewSlider,
 			Position = UDim2.new(0, 15, 1, 0),
@@ -3101,9 +3127,7 @@ end
 		-- // Returning
 		return Slider
 	end
-						
-						
-
+	--
 	function Sections:Dropdown(Properties)
 		local Properties = Properties or {};
 		local Dropdown = {
@@ -4170,4 +4194,3 @@ end
 	end
 	return Library
 end
-
