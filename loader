@@ -10,21 +10,46 @@ local rootPart = character:WaitForChild("HumanoidRootPart")
 
 local connections = {}
 
-if not hookmetamethod then localPlayer:Kick("Executor not supported, use a better executor. dm vasli for recommendations") end
-
-local realV, fakeV = rootPart.Velocity, Vector3.new()
-
-local oldI; oldI = hookmetamethod(game, "__index", function(self, key)
-    if self == rootPart and key == "Velocity" then return fakeV end
-    return oldI(self, key)
+if not hookmetamethod then
+pcall(function()
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Weak Executor",
+        Text = "Your Executor Does not Support ACB, Do NOT use speed hacks.",
+        Duration = 5
+    })
 end)
 
-rootPart:GetPropertyChangedSignal("Velocity"):Connect(function() realV = rootPart.Velocity end)
-localPlayer.CharacterAdded:Connect(function(c)
-    rootPart = c:WaitForChild("HumanoidRootPart")
-    realV = rootPart.Velocity
-    rootPart:GetPropertyChangedSignal("Velocity"):Connect(function() realV = rootPart.Velocity end)
+pcall(function()
+    local realV, fakeV = rootPart.Velocity, Vector3.new()
+
+    local oldI
+    oldI = hookmetamethod(game, "__index", function(self, key)
+        if self == rootPart and key == "Velocity" then
+            return fakeV
+        end
+        return oldI(self, key)
+    end)
+
+
+    rootPart:GetPropertyChangedSignal("Velocity"):Connect(function()
+        pcall(function()
+            realV = rootPart.Velocity
+        end)
+    end)
+
+    localPlayer.CharacterAdded:Connect(function(c)
+        pcall(function()
+            rootPart = c:WaitForChild("HumanoidRootPart")
+            realV = rootPart.Velocity
+            rootPart:GetPropertyChangedSignal("Velocity"):Connect(function()
+                pcall(function()
+                    realV = rootPart.Velocity
+                end)
+            end)
+        end)
+    end)
 end)
+
 
 if CoreGui:FindFirstChild("LoaderUI") then
 	CoreGui.LoaderUI:Destroy()
