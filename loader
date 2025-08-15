@@ -18,6 +18,7 @@ pcall(function()
         Duration = 5
     })
 end)
+end
 
 pcall(function()
     local realV, fakeV = rootPart.Velocity, Vector3.new()
