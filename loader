@@ -12,7 +12,6 @@ local connections = {}
 
 pcall(function()
     local realV, fakeV = rootPart.Velocity, Vector3.new()
-
     local oldI
     oldI = hookmetamethod(game, "__index", function(self, key)
         if self == rootPart and key == "Velocity" then
