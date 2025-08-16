@@ -10,16 +10,6 @@ local rootPart = character:WaitForChild("HumanoidRootPart")
 
 local connections = {}
 
-if not hookmetamethod then
-pcall(function()
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Weak Executor",
-        Text = "Your Executor Does not Support ACB, Do NOT use speed hacks.",
-        Duration = 5
-    })
-end)
-end
-
 pcall(function()
     local realV, fakeV = rootPart.Velocity, Vector3.new()
 
