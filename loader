@@ -154,7 +154,7 @@ end
 for _, gameInfo in ipairs(games) do
 	local btn = Instance.new("TextButton")
 	btn.Parent = scrollingFrame
-	btn.Text = ("load %s"):format(gameInfo.name)
+	btn.Text = ("Load %s"):format(gameInfo.name)
 	btn.BackgroundColor3 = Color3.fromRGB(14, 14, 14)
 	btn.BorderSizePixel = 0
 	btn.Size = UDim2.new(0, 165, 0, 25)
