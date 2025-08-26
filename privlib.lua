@@ -769,7 +769,7 @@ function Library:LoadConfigTab(Window)
 		Name = "Settings"
 	})
 	do
-	    local PlayerUtility = Config:Section({
+	    local Teleportsect = Config:Section({
 		    Name = "Teleport"
 		})
 		local Menu = Config:Section({
@@ -789,6 +789,10 @@ function Library:LoadConfigTab(Window)
 	    local editingsectah = Config:Section({
 		    Name = "Control",
             Side = "Right"
+		})
+	local PlayerUtility = Config:Section({
+		    Name = "Player Utility",
+            Side = "Left"
 		})
 							
 		local CurrentList = {}
@@ -1445,11 +1449,18 @@ end
 })	
 
 editingsectah:Button({
-Name = "Load Full ACB",
+Name = "Reset/Kill Character",
 Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/hubmainv4/a/refs/heads/main/acb2"))()								
+game:GetService("ReplicatedStorage").Connections.RemoteEvent:FireServer("resethealth")								
 end
-})							
+})	
+							
+editingsectah:Button({
+Name = "Save Inventory Everywhere",
+Callback = function()
+game:GetService("ReplicatedStorage").Connections.RemoteEvent:FireServer("SaveInventory", true)								
+end
+})	
 							
 		randomfunc = Cfgs:Textbox({
 			Flag = "SettingsConfigurationName",
