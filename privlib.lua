@@ -1390,7 +1390,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/hubmainv4/a/refs/head
 			end
 		})
 							
-PlayerUtility:Button({
+Teleportsect:Button({
 	Name = "Rejoin Server",
 	Callback = function()
 		local currentPlaceId = game.PlaceId
@@ -1406,7 +1406,7 @@ PlayerUtility:Button({
 	end
 })
   
-PlayerUtility:Button({
+Teleportsect:Button({
 	Name = "Return to Lobby",
 	Callback = function()
 		local currentPlaceId = 2000062521
@@ -1448,14 +1448,14 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/d
 end
 })	
 
-editingsectah:Button({
+PlayerUtility:Button({
 Name = "Reset/Kill Character",
 Callback = function()
 game:GetService("ReplicatedStorage").Connections.RemoteEvent:FireServer("resethealth")								
 end
 })	
 							
-editingsectah:Button({
+PlayerUtility:Button({
 Name = "Save Inventory Everywhere",
 Callback = function()
 game:GetService("ReplicatedStorage").Connections.RemoteEvent:FireServer("SaveInventory", true)								
