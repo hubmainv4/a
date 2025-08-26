@@ -1409,17 +1409,28 @@ Teleportsect:Button({
 Teleportsect:Button({
 	Name = "Return to Lobby",
 	Callback = function()
-		local currentPlaceId = 2000062521
-		
+
 		local success = pcall(function()
-			game:GetService("TeleportService"):Teleport(currentPlaceId, game.Players.LocalPlayer)
+			game:GetService("TeleportService"):Teleport(2000062521, game.Players.LocalPlayer)
 		end)
 		
 		if not success then
-			Library:Notification("Unable to rejoin Server", 3, nil, "Top")
+			Library:Notification("Unable to return to lobby", 3, nil, "Top")
 		end
 	end
 })
+
+Teleportsect:Button({
+	Name = "Copy Join Code",
+	Callback = function()
+		local currentPlaceId = game.PlaceId
+		local currentJobId = game.JobId
+		toclipboard(game:GetService("TeleportService"):TeleportToPlaceInstance(currentPlaceId, currentJobId, game.Players.LocalPlayer))
+	end
+})
+
+
+							
 editingsectah:Button({
 Name = "Load Infinite Yield",
 Callback = function()
