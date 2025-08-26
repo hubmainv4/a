@@ -1425,7 +1425,8 @@ Teleportsect:Button({
 	Callback = function()
 		local currentPlaceId = game.PlaceId
 		local currentJobId = game.JobId
-		toclipboard("game:GetService("TeleportService"):TeleportToPlaceInstance(currentPlaceId, currentJobId, game.Players.LocalPlayer)")
+		toclipboard("game:GetService('TeleportService'):TeleportToPlaceInstance("..currentPlaceId..", '"..currentJobId.."', game.Players.LocalPlayer)")
+
 	end
 })
 
