@@ -903,9 +903,9 @@ PresetThemes:Dropdown({
                   ['CryptHub OF'] = {
 						FontColor = "#ffffff",
 						MainColor = "#2e2e2e",
-						Accent = "#6a00ff",
+						Accent = "#00AEFF",
 						BackgroundColor = "#1c1c1c",
-						OutlineColor = "#000000"
+						OutlineColor = "#192554"
 					},
 
 											
