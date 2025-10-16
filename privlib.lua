@@ -2017,7 +2017,7 @@ do
 			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			BorderColor3 = Color3.new(0, 0, 0),
-			Text = "CryptHub Zaiphon | 1.5.5 | Pro",
+			Text = "CryptHub Zaiphon | 1.6.1 | Universal Bypass Update",
 			TextColor3 = "Accent",
 			AutoButtonColor = false,
 			FontFace = Library.Font,
