@@ -1406,19 +1406,7 @@ Teleportsect:Button({
 	end
 })
   
-Teleportsect:Button({
-	Name = "Return to Lobby",
-	Callback = function()
 
-		local success = pcall(function()
-			game:GetService("TeleportService"):Teleport(2000062521, game.Players.LocalPlayer)
-		end)
-		
-		if not success then
-			Library:Notification("Unable to return to lobby", 3, nil, "Top")
-		end
-	end
-})
 
 Teleportsect:Button({
 	Name = "Copy Join Code",
